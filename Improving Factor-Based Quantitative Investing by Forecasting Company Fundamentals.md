@@ -48,7 +48,51 @@ Moreover, in retro spective anlysis using an industry-grade stock portfolio simu
 
 1. Introduction
 
-Public stock markets provide a venue for buying and selling shares, which representfractional ownership of individual
+Public stock markets provide a venue for buying and selling shares, which represent fractional ownership of individual companies.
+
+공개 주식 시장은 개별 기업의 부분 소유권을 나타내는 주식을 매매하는 장소를 제공한다.
+
+Prices fluctuate frequently, but the myriad drivers of price movements occur on multiple time scale.
+
+가격은 자주 변동하지만, 가격 움직임의 무수한 원인은 여러 시간 scale에서 발생한다. 
+
+In the short run, price movements might reflect the dynamics of order execution, and the behavior of high frequency traders.
+
+단기적으로는, 가격 변동은 주문 실행의 동력이고 고빈도 거래자의 행동을 반영 할 수 있다.
+
+On the scale of days, price fluctuation might be driven by the news cycle.
+
+며칠 동안의 가격 변동은 뉴스 cycle에 의해 좌우될 수 있다.
+
+Individual stocks may rise or fall on rumors or reports of sales numbers, product launches, etc.
+
+개별주식은 소문, 판매 보고서의 숫자들, 신제품 출시 등으로 인해 상승하거나 하락할 수 있다.
+
+In the long run, we expect a company's market value to reflect its financial performance, as captured in *fundamental data*, i.e., reported financial information such as income, revenue, assets, dividends, and debt.
+
+장기적으로, 우리는 기업의 시장가치가 그것의 fundamental data에 기록된 재무 성과(즉, 수입, 이익, 자산, 배당금, 부채와 같은 보고된 재무정보)를 반영할 것으로 기대한다.
+
+In other words, shares reflect ownership in a company thus share prices should ultimately move towards the company's *intrinsic value*, the cumulative discounted cash flows associated with that ownership.
+
+다시 말해서, 주식은 회사의 소유권을 반영하므로 주가는 궁극적으로 회사의 내재 가치(소유권과 관련된 누적 할인 현금 흐름)로 이동한다.
+
+One popular strategy called *value investing* is predicated on the idea that long-run prices reflect this intrinsic value and that the best features for predicting *long-term* intrinsic value are the *currently* available fundamental data.
+
+가치 투자라는 유명한 전략은 장기 가격이  본질적인 가치를 반영하고 장기 내재가치를 예측하기 위한 최상의 features은 현재 사용가능한 fundamental data라는 idea에 근거한다.
+
+----
+
+In a typical quantitative (systematic) investing strategy, we sort the set of available stocks according to some *factor* and construct investment portfolios comprised of those stocks which score highest.
+
+Many quantitative investors engineer *value factors* by taking fundamental data in a ratio to stock's price, such as EBIT/EV or book-to-market.
+
+Stock with high value factor ratios are called *value* stocks and those with low ratios are called *growth* stocks.
+
+Academic researchers have demonstrated empirically that portfolios of stocks which overweight value stocks have significantly outperformed portfolios that overweight growth stocks over the long run [12, 7].
 
 
+
+**In this paper**, we propose an investment strategy that constructs portfolios of stocks today based on *predicted future fundamentals*. Recall that value factor should identify companies ahta are inexpensively priced with respect to current company fundamentals such as earning or boo-value. We suggest that the long-term success of an investment should depend on the how well-priced the stock *currently is* with respect to its *future fundamentals*. We run simulations with a *clairvoyant model* that can access future financial reports (by oracle). In Figure 1, we demonstrate that for the 2000-2014 time period, a clairvoyant model applying the EBIT/EV factor with 12-month clairvoyant fundamentals, if possible, would achieve a 44% compound annualized return.
+
+ 
 
