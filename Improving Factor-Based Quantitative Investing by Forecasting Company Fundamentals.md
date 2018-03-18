@@ -125,7 +125,7 @@ Figure 1: Annualized return for various factor models for different degrees of c
 
 그림 1: 다양한 clairvoyance 정도에 대한 다양한 factor models에 대한 연간 수익률.
 
-![Figure1](/home/is/다운로드/figure1 clairvoyance.png "Figure 1:Annualized return for various factor models for different degrees of clairvoyance.")
+![Figure1](./image/figure1.png "Figure 1:Annualized return for various factor models for different degrees of clairvoyance.")
 
 ---
 
