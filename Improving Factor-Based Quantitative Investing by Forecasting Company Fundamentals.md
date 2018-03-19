@@ -28,7 +28,7 @@ Public stock markets provide a venue for buying and selling shares, which repres
 
 공개 주식 시장은 개별 기업의 부분 소유권을 나타내는 주식을 매매하는 장소를 제공한다.가격은 자주 변동하지만, 가격 움직임의 무수한 원인은 여러 시간 scale에서 발생한다. 단기적으로는, 가격 변동은 주문 실행의 동력이고 고빈도 거래자의 행동을 반영 할 수 있다. 며칠 동안의 가격 변동은 뉴스 cycle에 의해 좌우될 수 있다. 개별주식은 소문, 판매 보고서의 숫자들, 신제품 출시 등으로 인해 상승하거나 하락할 수 있다. 장기적으로, 우리는 기업의 시장가치가 그것의 fundamental data에 기록된 재무 성과(즉, 수입, 이익, 자산, 배당금, 부채와 같은 보고된 재무정보)를 반영할 것으로 기대한다. 다시 말해서, 주식은 회사의 소유권을 반영하므로 주가는 궁극적으로 회사의 내재 가치(소유권과 관련된 누적 할인 현금 흐름)로 이동한다. 가치 투자라는 유명한 전략은 장기 가격이  본질적인 가치를 반영하고 장기 내재 가치를 예측하기 위한 최상의 features은 현재 사용가능한 fundamental data라는 idea에 근거한다.
 
-In a typical quantitative (systematic) investing strategy, we sort the set of available stocks according to some *factor* and construct investment portfolios comprised of those stocks which score highest. Many quantitative investors engineer *value factors* by taking fundamental data in a ratio to stock's price, such as EBIT/EV or book-to-market. Stock with high value factor ratios are called *value* stocks and those with low ratios are called *growth* stocks. Academic researchers have demonstrated empirically that portfolios of stocks which overweight value stocks have significantly outperformed portfolios that overweight growth stocks over the long run [13](#13).
+In a typical quantitative (systematic) investing strategy, we sort the set of available stocks according to some *factor* and construct investment portfolios comprised of those stocks which score highest. Many quantitative investors engineer *value factors* by taking fundamental data in a ratio to stock's price, such as EBIT/EV or book-to-market. Stock with high value factor ratios are called *value* stocks and those with low ratios are called *growth* stocks. Academic researchers have demonstrated empirically that portfolios of stocks which overweight value stocks have significantly outperformed portfolios that overweight growth stocks over the long run [[13](#13)].
 
 전형적인 양적 (체계적) 투자 전략에서 우리는 어떤 factor에 따라 사용 가능한 주식 세트를 분류하고 가장 높은 점수를 가진 주식으로 구성된 투자 포트폴리오를 구성한다. 많은 양적 투자자는 EBIT/EV 또는 장부가 비율(book-to-market)과 같은 주식 가격 대비 비율로 fundamental data를 취함으로써 가치 factors를 설계한다. 높은 가치 요소 비율을 가진 주식을 가치주라고 하고 낮은 비율을 갖는 것을 성장주라고 한다. 학술 연구자들은 성장주의 비중을 확대한 portfolios보다 가치주의 비중을 확대한 portfolios가 장기적으로 현저하게 성과가 높다는 것을 경험적으로 입증했다. [12, 7]
 
@@ -40,7 +40,7 @@ Figure 1: Annualized return for various factor models for different degrees of c
 
 그림 1: 다양한 clairvoyance 정도에 대한 다양한 factor models에 대한 연간 수익률.
 
-![Figure 1](./image/figure1.png)
+![Figure 1](./image/figure1.svg)
 
 Motivated by the performance of factors applied to clairvoyant future data, we propose to predict future fundamental data based on trailing time series of 5 years of fundamental data. We denote these algorithms as Lookahead Factor Models (LFMs). Both multilayer perceptrons (MLPs) and recurrent neural networks (RNNs) can make informative predictions, achieving out-of-sample MSE of .47, vs .53 for linear regression and .62 for a naive perdictor. Simulations demonstrate that investing with LFMs based on the predicted factors yields a compound annualized return (CAR) of 17.7%, vs 14.4% for a normal factor model and a Sharpe ratio .68 vs .55.
 
