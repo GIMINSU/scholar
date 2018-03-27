@@ -44,9 +44,11 @@ Figure 1: Annualized return for various factor models for different degrees of c
 
 Motivated by the performance of factors applied to clairvoyant future data, we propose to predict future fundamental data based on trailing time series of 5 years of fundamental data. We denote these algorithms as Lookahead Factor Models (LFMs). Both multilayer perceptrons (MLPs) and recurrent neural networks (RNNs) can make informative predictions, achieving out-of-sample MSE of .47, vs .53 for linear regression and .62 for a naive perdictor. Simulations demonstrate that investing with LFMs based on the predicted factors yields a compound annualized return (CAR) of 17.7%, vs 14.4% for a normal factor model and a Sharpe ratio .68 vs .55.
 
-clairvoyance 미래 data에 적용된 factors의 성능에 의한 동기부여를 통해 5년간의 fundamental data의 후행 시계열을 기반으로 미래의 fundamental data를 예측할 것을 제안한다. 이러한 algorithms을 Lookahead Factor Models (LFMs)라고 한다. Multilayer Perceptron (MLP)과 RNN(Recurrent Neural Network) 모두 표본 MSE가 0.47, 선형 회귀 분석에서는 0.53, naive predictor는 0.62를 얻을 수 있다. simulation 결과 예측된 factor를 기반으로 LFM에 투자하면 17.7%의 복합 연평균 수익률(CAR)이 얻어지며 normal factor model의 경우 14.4%, Sharpe ratio[^7]는 LFM은 0.68 normal factor model은 0.55이다. 
+clairvoyance 미래 data에 적용된 factors의 성능에 의한 동기부여를 통해 5년간의 fundamental data의 후행 시계열을 기반으로 미래의 fundamental data를 예측할 것을 제안한다. 이러한 algorithms을 Lookahead Factor Models (LFMs)라고 한다. Multilayer Perceptron(MLP)[^7]과 RNN(Recurrent Neural Network)[^8] 모두 표본 MSE가 0.47, 선형 회귀 분석에서는 0.53, naive predictor는 0.62를 얻을 수 있다. simulation 결과 예측된 factor를 기반으로 LFM에 투자하면 17.7%의 복합 연평균 수익률(CAR)이 얻어지며 normal factor model의 경우 14.4%, Sharpe ratio[^9]는 LFM은 0.68 normal factor model은 0.55이다. 
 
-[^7]: Sharpe ratio 평균 수익에서 무위험 수익(risk-free return)을 뺀 값을 투자 수익의 표준 편차로 나눈 값
+[^7]: neural network(신경망) 모형은 기저 함수(basis function)도 parameter에 의해 변화할 수 있는 적응형 기저 함수 모형(adaptive basis function model)이며 구조적으로는 여러개의 perceptron을 쌓아놓은 형태이므로 MLP(multilayer perceptron)으로도 불린다.
+[^8]: 시계열 데이터(Time-series data)에서 탁월한 성능을 보여주는 deep learning 방법. RNN은 매 순간마다 인공신경만 구조를 쌓아올린 것이다. 예전의 RNN은 인공신경망이 너무 깊어서 오랜 시간 전의 data들을 까먹는 현상(vanishing gradient problem) 때문에 학습이 힘들었지만 Jurgen Schmidhuber 교수의 Long-Short term Memory란 gate unit을 node마다 배치하여 이러한 문제를 극복하였음. RNN은 과거의 출력이 다시 입력이 되는 피드백 구조를 갖는다. 이 구조 덕분에 RNN은 기억 능력이 있다고 한다. 배열의 정보를 보유하고 이 정보를 이용해 원하는 일을 하게 한다. 배열의 정보는 RNN의 은닉층에 저장된다. 이 은닉층에 보관한 정보는 시간이 지난 뒤에 저장한 정보가 필요한 입력이 들어오면 다시 사용된다. 
+[^9]: Sharpe ratio 평균 수익에서 무위험 수익(risk-free return)을 뺀 값을 투자 수익의 표준 편차로 나눈 값
 
 **Related Work**   Deep neural networks models have proven powerful for tasks as diverse as language translations [14, 1], video captioning [11, 16], video recognition [6, 15], and time series modeling [9, 10, 3]. A number of recent paper consider deep learning approaches to predicting stock market performance. [2] evaluates MLPs for stock market prediction. [5] uses recursive tensor nets to extract events from CNN news reports and uses convolutional neural nets to predict future performance from a sequence of extracted events. Several preprinted drafts consider deep learning for stock market prediction [4, 17, 8] however, in all cases, the empirical studies are limited to few stocks and short time periods.
 
@@ -62,19 +64,19 @@ Deep neural networks models은 언어 번역 [1], video captioning [11, 16], vid
 
 For eachstock and at each time step *t*, weconsider a total of 20 input features. We engineer16 features from the fundamentals as inputs to our models. Income statement features are cumulative *trailing twelve months*, denoted TTM, and balance sheet features are most recentquarter, denoted MRQ. First we consider These items include *revenue* (TTM); cost of goods sold (TTM);selling, general & and admin expense(TTM); earnings before interest and taxes or EBIT (TTM); net income(TTM); cash and cash equivalents (MRQ); receivables (MRQ); inventories (MRQ);other current assets (MRQ); property plant and equipment (MRQ); other assets(MRQ); debt in current liabilities (MRQ); accounts payable (MRQ); taxes payable(MRQ); other current liabilities (MRQ); total liabilities (MRQ).For all features, we deal with missing valuesby filling forward previously observed values, following the methods of [9]. Additionally we incorporate 4 *momentum features*, which indicate the price movement of the stock over the previous 1, 3, 6, and 9 months respectively. So that our modelpicks up on relative changes and doesn’t focus overly on trends in specifictime periods, we use the percentile among all stocks as a feature (vs absolute numbers).
 
-각 주식 및 각 시간 단계 t에서 총 20개의 input features를 고려한다. 우리의 모델에 입력자료의 fundamentals로부터 16개 feature로 design and build한다. 손익계산서 features는 누적 후행 12개월로 TTM[^8]으로 표기하고, 대차대조표 features는 가장 최근의 분기로 MRQ[^9]로  표기한다. 먼저 우리는 이러한  항목에 수익(TTM); 판매된 상품 원가(TTM); 판매, 일반 및 관리 비용(TTM); 이자 및 세금 전 이익 또는 EBIT(TTM); 순소득(TTM); 현금 및 현금 등가물(MRQ); 미수금(MRQ);, 재고품(MRQ); 다른 현재 자산들(MRQ); 유형자산[^10] (MRQ); 기타자산(MRQ); 유동부채[^11] (MRQ); 채무[^12] (MRQ); 납부할 세금(MRQ); 기타 유동 부채(MRQ); 총 부채(MRQ)가 포함되어 있다고 간주한다. 모든 특징에 대해 우리는 [9]의 방법에 따라 이전에 관측된 값을 채워 누락된 값을 처리한다. 또한 이전 1, 3, 6 및 9개월에 걸쳐 주가 변동을 나타내는 4개의 momentum feature를 통합했다. 우리 model이 상대적인 변화를 예측하고 특정 시기의 추세에 집중하지 않도록 모든 주식의 백분율을 feature로 사용한다(절대 수치와 비교).
+각 주식 및 각 시간 단계 t에서 총 20개의 input features를 고려한다. 우리의 모델에 입력자료의 fundamentals로부터 16개 feature로 design and build한다. 손익계산서 features는 누적 후행 12개월로 TTM[^10]으로 표기하고, 대차대조표 features는 가장 최근의 분기로 MRQ[^11]로  표기한다. 먼저 우리는 이러한  항목에 수익(TTM); 판매된 상품 원가(TTM); 판매, 일반 및 관리 비용(TTM); 이자 및 세금 전 이익 또는 EBIT(TTM); 순소득(TTM); 현금 및 현금 등가물(MRQ); 미수금(MRQ);, 재고품(MRQ); 다른 현재 자산들(MRQ); 유형자산[^12] (MRQ); 기타자산(MRQ); 유동부채[^13] (MRQ); 채무[^14] (MRQ); 납부할 세금(MRQ); 기타 유동 부채(MRQ); 총 부채(MRQ)가 포함되어 있다고 간주한다. 모든 특징에 대해 우리는 [9]의 방법에 따라 이전에 관측된 값을 채워 누락된 값을 처리한다. 또한 이전 1, 3, 6 및 9개월에 걸쳐 주가 변동을 나타내는 4개의 momentum feature를 통합했다. 우리 model이 상대적인 변화를 예측하고 특정 시기의 추세에 집중하지 않도록 모든 주식의 백분율을 feature로 사용한다(절대 수치와 비교).
 
-[^8]: Trailing Twelve Months(년)
-[^9]: Most Recent Quater(최근 분기)
-[^10]: Property, Plant and Equipment(PP&E) 유형자산으로 해석함. 회사의 자산, 제조 공장 및 장비를 구매한 모든 시점을 합산한 것
-[^11]: 회사의 대차대조표에 나타나고 있는 단기부채, 미지급금, 미지급 부채, 기타부채가 포함된 회사의 채무
-[^12]: Accounts Payable(AP) 채권자에게 단기 부채를 상환해야하는 기업의 의무를 나타내는 회계 항목
+[^10]: Trailing Twelve Months(년)
+[^11]: Most Recent Quater(최근 분기)
+[^12]: Property, Plant and Equipment(PP&E) 유형자산으로 해석함. 회사의 자산, 제조 공장 및 장비를 구매한 모든 시점을 합산한 것
+[^13]: 회사의 대차대조표에 나타나고 있는 단기부채, 미지급금, 미지급 부채, 기타부채가 포함된 회사의 채무
+[^14]: Accounts Payable(AP) 채권자에게 단기 부채를 상환해야하는 기업의 의무를 나타내는 회계 항목
 
 **Preprocessing** Each of the fundamental features exhibits a wide dynamic range over the universe of considered stocks. For example, Apple’s 52-week revenue as of September 2016 was 215 billion(USD). By contrast, National Presto, which manufactures pressure cookers, had a revenue 340million.  Intuitively,  these statistics are more meaningful when scaled by some measure of a company’s size. In preprocessing, we scale all fundamental features in given time series by the market capitalization in the last input time-step of the series. We scale all time steps by the same value so that the neural network can assess the relative change in fundamental values between time steps. While other notions of size are used, such as enterprise value and book equity, we choose to avoid these measure because they can, although rarely, take negative values. We then further scale the features so that they each individually have zero mean and unit standard deviation.
 
-**전처리** 각 fundamental features는 고려된 주식의 모집단(의역)에 대해 넓은 동적 범위를 나타낸다. 예를 들어, 2016년 9월 현재 Apple의 52주 수익은 215억달러(USD)였다. 대조적으로 pressure cookers를 제조하는 National Presto의 수익은 3억 4천만달러(USD)였다. 직관적으로 이러한 통계는 회사의 규모에 따라 조정될 때 더 의미가 있다. 전처리 과정에서 우리는 주어진 시계열의 모든 fundamental features를 마지막 입력 시간 단계에서 시가 총액으로 확장한다. 신경망이 시간 간격 사이의 fundamental values의 상대적 변화를 평가할 수 있도록 모든 시간 간격을 동일한 값으로 조정한다. 기업 가치, book equity[^13]와 같이 다른 크기의 개념이 사용될 때, 그것들은 드물게 부정적인 값을 가질 수 있기 때문에 이러한 척도를 피하도록 선택한다. 그런 다음 각 feature의 평균 및 단위 표준편차가 0이 되도록 feature의 크기를 조절한다.
+**전처리** 각 fundamental features는 고려된 주식의 모집단(의역)에 대해 넓은 동적 범위를 나타낸다. 예를 들어, 2016년 9월 현재 Apple의 52주 수익은 215억달러(USD)였다. 대조적으로 pressure cookers를 제조하는 National Presto의 수익은 3억 4천만달러(USD)였다. 직관적으로 이러한 통계는 회사의 규모에 따라 조정될 때 더 의미가 있다. 전처리 과정에서 우리는 주어진 시계열의 모든 fundamental features를 마지막 입력 시간 단계에서 시가 총액으로 확장한다. 신경망이 시간 간격 사이의 fundamental values의 상대적 변화를 평가할 수 있도록 모든 시간 간격을 동일한 값으로 조정한다. 기업 가치, book equity[^15]와 같이 다른 크기의 개념이 사용될 때, 그것들은 드물게 부정적인 값을 가질 수 있기 때문에 이러한 척도를 피하도록 선택한다. 그런 다음 각 feature의 평균 및 단위 표준편차가 0이 되도록 feature의 크기를 조절한다.
 
-[^13]: 특정 기간이 끝날 때 재무 상태 보고서에 표시된 회사 주식의 가치
+[^15]: 특정 기간이 끝날 때 재무 상태 보고서에 표시된 회사 주식의 가치
 
 **Modeling** In our experiments, we divide the timeline in to an *in-sample* and *out-of-sample* period. Then, even within the in-sample period, we need to partition some of the data as a validation set.  In forecasting problems, we face distinct challenges in guarding against overfitting. First, we’re concerned with the traditional form of overfitting. Within the in-sample period, we do not want to over-fit to the finite observed training sample. To protect against and quantify this form of overfitting, we randomly hold out a validation set consisting of 30% of all stocks. On this *in-sample* validation set, we determine all hyperparameters, such as learning rate, model architecture, objective function weighting. We also use the in-sample validation set to determine early stopping criteria. When training, we record the validation set accuracy after each training epoch, saving the model for each best score achieved. When 25 epochs have passed without improving on the best validation set performance, we halt training and selecting the model with the best validation performance. In addition to generalizing well to the in-sample holdout set, we evaluate whether the model can predict the future *out-of-sample* stock performance. Since this research is focused on long-term investing, we chose large in-sample and out-of-sample periods of the years 1970-1999 and 2000-2017, respectively.
 
@@ -86,13 +88,13 @@ In previous experiments, we tried predicting price movements directly with RNNs 
 
 Given only price data, RNN’s easily overfit the training data while failing to improve performance on in-sample validation. **One key benefit of our approach** is that by doing *multi-task learning*, predicting all 16 future fundamentals, we provide the model with considerable training signal and may thus be less susceptible to overfitting.
 
-가격 data만 주어지면 RNN은 training data에 쉽게 overfitting되지만, sample 내 유효성 검사의 성능은 향상시키지 못한다. **우리의 접근 방식의 한 가지 주요 이점**은 *다중 작업 학습*을 수행하여 16가지의 모든 미래의 fundamentals를 예측함으로써 model에 상당한 training signal을 제공하고 따라서 overfitting에 덜 민감할 수 있다는 것이다.  
+가격 data만 주어지면 RNN은 training data에 쉽게 overfitting되지만, sample 내 유효성 검사의 성능은 향상시키지 못한다. **우리의 접근 방식의 한 가지 주요 이점**은 *multi-task learning*을 수행하여 16개의 모든 미래의 fundamentals를 예측함으로써 model에 상당한 training signal을 제공하고 따라서 overfitting에 덜 민감할 수 있다는 것이다.  
 
 The price movement of stocks is extremely noisy [13] and so, suspecting that the relationships among fundamental data may have a larger signal to noise ratio than the relationship between fundamentals and price, we set up the problem thusly: For MLPs, at each month $t$, given features for 5 month spaced 1 year apart ($t - 48$, $t - 36$, $t - 24$, $t - 12$), predict the fundamental data at time $t + 12$. For RNNs, the setup is identical but with the small modification that for each input in the sequence, we predict the corresponding month lookahead data.
 
-주식의 가격 움직임은 매우 noisy [13]하기 때문에 fundamental data 간의 관계가 fundamentals와 price 사이의 관계 보다 더 큰 signal to noise ratio[^14]을 가질 수 있다고 의심하기 때문에 우리는 다음과 같이 문제를 설정한다. MLP의 경우 매달 ($t - 48$, $t - 36$, $t - 24$, $t - 12$)의 fundamental data를 예측한다. RNN의 경우 설정은 동일하지만 작은 sequence의 각 입력에 대해 해당 달의 미리보기 data를 예측한다.
+주식의 가격 움직임은 매우 noisy [13]하기 때문에 fundamental data 간의 관계가 fundamentals와 price 사이의 관계 보다 더 큰 signal to noise ratio[^16]을 가질 수 있다고 의심하기 때문에 우리는 다음과 같이 문제를 설정한다. MLP의 경우 매달 ($t - 48$, $t - 36$, $t - 24$, $t - 12$)의 fundamental data를 예측한다. RNN의 경우 설정은 동일하지만 작은 sequence의 각 입력에 대해 해당 달의 lookahead data를 예측한다.
 
-[^14]: 다른 신호(signal)의 강도(strength)와 간섭(interference)의 강도의 비율
+[^16]: 다른 신호(signal)의 강도(strength)와 간섭(interference)의 강도의 비율
 
 We evaluated two classes of deep neural networks: MLPs and RNNs. For each of these, we tune hyperparameters on the in-sample period. We then evaluated the resulting model on the out-of-sample period. For both MLPs and RNNs, we consider architectures evaluated with 1, 2, and 4 layers with 64, 128, 256, 512 or 1024 nodes. We also evaluate the use of dropout both on the inputs and between hidden layers. For MLPs we use ReLU activations and apply batch normalization between layers. For RNNs we test both GRU and LSTM cells with layer normalization. We also searched overvarious optimizers (SGD, AdaGrad, AdaDelta), settling on AdaDelta. We also applied L2-norm clipping on RNNs to prevent exploding gradients. Our optimization objective is to minimize square loss.
 
@@ -104,9 +106,9 @@ To account  for the fact that we care more about our prediction of EBIT over the
 
 ![Figure 1](.\image/figure2.svg)
 
-그림 2 (a) 2000-2014 기간 동안의 sample 밖의 성능. All factor model은 EBIT/EV를 사용한다. QFM은 현재 EBIT를 사용하지만 제안된 LFM은 predicted EBIT를 사용한다. Price-LSTM은 가격을 직접 예측할 수 있도록 훈련되었다.
+(a) 2000-2014 기간 동안의 sample 밖의 성능. All factor model은 EBIT/EV를 사용한다. QFM은 현재 EBIT를 사용하지만 제안된 LFM은 predicted EBIT를 사용한다. Price-LSTM은 가격을 직접 예측할 수 있도록 훈련되었다.
 
-그림 2 (b) MSE(오렌지색) 및 naive predictor(검정색)의 샘플을 벗어난 기간의 MSE.
+(b) MSE(오렌지색) 및 naive predictor(검정색)의 샘플을 벗어난 기간의 MSE.
 
 Table 1 : Final hyperparameters for MLP and RNN
 
@@ -123,28 +125,30 @@ Table 1 : Final hyperparameters for MLP and RNN
 
 **Evaluation** As a first step in evaluating the forecast produced by the neural  networks, we compare the MSE of the predicted fundamental on out-of-sample data with a naive prediction where predicted fundamentals at time $t$ is assumed to be the same as the fundamentals  at $t - 12$. To compare the practical utility of traditional factor models vs lookahead factor models we employ an industry grade investment simulator. The simulator evaluates hypothetical stock portfolios constructed on out-of-sample data. Simulated investment returns reflect how an investor might have performed had they invested in the past according to given strategy.
 
-**평가** neural networks에 의해 생성된 예측을 평가하는 첫 번째 단계로, sample 밖의 data에 대한 예측의 기본의 MSE와 naive prediction($t-12$에서의 fundamentals와 $t$에서 예측된 fundamentals가 같다고 가정한 naive prediction)과 비교한다.
+**평가** neural networks에 의해 생성된 예측을 평가하는 첫 번째 단계로, sample 밖의 data에 대한 예측의 기본의 MSE와 naive prediction($t-12$에서의 fundamentals와 $t$에서 예측된 fundamentals가 같다고 가정한 naive prediction)과 비교한다. traditional factor models과 lookahead factor models의 실용적인 효용을 비교하기 위해 우리는 industry grade investment simulator를 사용한다. simulator는 sample 밖의 data로 구성된 가상의 주식 portfolios를 평가한다. 모의 투자 수익은 주어진 전략에 따라 과거에 투자한 투자자의 성과를 반영한다.  
 
-The simulation results reflect assets-under-management at the start of each month that, when adjusted by the S&P 500 Index Price to January 2010, are equal to $100 million. We construct portfolios by ranking all stocks according to the factor EBIT/EV in each month and investing equal amounts of capital into the top 50
-stocks holding each stock for one-year. When a stock falls out of the top 50 after one year, it is sold with proceeds reinvested in another highly ranked stock that is not currently
-in the simulated portfolio. We  limit the number of shares of a security bought or sold in a month  to no
-more than 10% of the monthly volume for a security. Simulated prices for stock purchases and sales
-are based on the volume-weighted daily closing price of the security during the first 10 trading days
-of each month. If a stock paid a dividend during the period it was held, the dividend was credited to the simulated fund in proportion to the shares held. Transaction costs are factored in as $0.01 per share, plus an additional slippage factor that increases as a square of the simulation’s volume participation in a security. Specifically, if participating at the maximum 10% of monthly volume, the simulation buys at 1% more than the average market price and sells at 1% less than the average market price. Slippage accounts for transaction friction, such as bid/ask spreads, that exists in real life trading.
+The simulation results reflect assets-under-management at the start of each month that, when adjusted by the S&P 500 Index Price to January 2010, are equal to 100 million(USD). We construct portfolios by ranking all stocks according to the factor EBIT/EV in each month and investing equal amounts of capital into the top 50 stocks holding each stock for one-year. When a stock falls out of the top 50 after one year, it is sold with proceeds reinvested in another highly ranked stock that is not currently in the simulated portfolio. We limit the number of shares of a security bought or sold in a month  to no more than 10% of the monthly volume for a security. Simulated prices for stock purchases and sales are based on the volume-weighted daily closing price of the security during the first 10 trading days of each month. If a stock paid a dividend during the period it was held, the dividend was credited to the simulated fund in proportion to the shares held. Transaction costs are factored in as 0.01(USD) per share, plus an additional slippage factor that increases as a square of the simulation’s volume participation in a security. Specifically, if participating at the maximum 10% of monthly volume, the simulation buys at 1% more than the average market price and sells at 1% less than the average market price. Slippage accounts for transaction friction, such as bid/ask spreads, that exists in real life trading.
 
-**Our results demonstrate** a clear advantage for the lookahead factor model. In nearly all months, however
-turbulent the market, neural networks outperform the naive predictor (that fundamentals remains unchanged) (Figure [2b]). Simulated portfolios lookahead factor strategies with MLP and RNN perform
-similarly, both beating traditional factor models (Table [2a).](#_bookmark1)
+simulation 결과들은 S&P 지수에 의해 2010년 1월까지 조정될 때 매달 초 1억 달러와 같은 관리 자산[^16]을 반영한다. 우리는 매월 EBIT/EV factor에 따라 모든 주식을 순위화하고 각 주식을 1년 동안 보유하고 있는 50대 주식에 동일한 자본을 투자하여 포트폴리오를 구성한다. 1년 후에 상위 50개에서 떨어진 주식은 팔고 현재의 simulated portfolio에 없는 높은 순위의 주식으로 재투자를 진행한다. 한 달 동안 매입 또는 매도한 주식의 비중을 매월 주식의 10% 이하로 제한한다. 주식 매입 및 판매에 대한 simulated prices는 매월 첫 10 거래일 동안의 주식의 가중 일별 종가로 계산된다. 주식이 보유 기간 동안 배당금을 지급하면 배당금은 보유 주식 수에 비례하여 모의 기금에 적립된다. 거래 비용은 주당 0.01달러로 계산되며, 주식에 대한 simulation 참여 규모의 제곱으로 증가하는 추가 slippage[^17] factor이 더해진다. 특히, 월간 규모의 최대 10%에 참여하는 경우 simulation은 평균 시장가격보다 1%이상 높게 구매하고, 평균 시장가격보다 1%이상 낮게 판매한다. slippage는 실제 거래에 존재하는 Bid-Ask Spread[^18]와 같은 거래 마찰(transaction friction)[^19]을 설명한다.
+
+[^16]: Asset-under-management(AUM) 관리 자산은 투자 회사 또는 금융 기관이 투자자를 대신하여 관리하는 자산의 총 시가. 관리 자산의 정의 및 수식의 자산은 회사마다 다르다. 일부 금융 기관에서는 은행 예금, 뮤추얼 펀드 및 현금이 포함된다. 다른 회사들은 투자자가 회사에 책임을 맡긴 임의의 관리하의 자금으로 제한한다.
+[^17]: slippage는 주문 가격과 실제로 거래된 가격의 차이를 가리킨다. Silppage는 시장 주문이 사용될 때 변동성이 더 높은 기간에 종종 발생하며 예상되는 가격을 유지하기 위해 원하는 가격 수준에서 충분한 관심이 없을 때 대규모 주문이 실행될 때 발생한다.
+[^18]: Bid-Ask Spread는 매도 호가가 시장의 주식에 대한 매수 가격을 초과하는 금액이다. Bid-Ask Spread는 기본적으로 구매자가 주식에 대해 지불하고자 하는 최고가와 판매자가 판매할 의사가 있는 최저 가격 사이의 차이다.
+[^19]: transaction friction을 friction cost로 이해함. friction cost(마찰비용)은 금융 거래 실행과 관련된 총 직접 비용과 간접비용이다. 마찰 비용은 거래와 관련된 모든 비용을 종합적으로 고려한다. 마찰 비용을 계산하면 투자자에게 발생할 것으로 예상할 수 있는 예상 비용의 전체 범위를 제공한다.
+
+**Our results demonstrate** a clear advantage for the lookahead factor model. In nearly all months, however turbulent the market, neural networks outperform the naive predictor (that fundamentals remains unchanged) (Figure [2b]). Simulated portfolios lookahead factor strategies with MLP and RNN perform similarly, both beating traditional factor models (Table [2a]).
+
+**우리의 결과들**은 lookahead factor model에 대한 분명한 이점을 보여준다. 거의 모든 달 동안 시장이 격동했지만, neural networks은 naive predictor를 능가한다.(fundamentals는 변하지 않았다.)(그림 2b) simulated portforlios MLP와 RNN을 이용한 lookahead factor 전략들은 유사하게 수행되며, 두 가지 모두 traditional factor models을 능가한다. 
 
 ### 3. Discussion
 
-In thispaper we demonstrate a new approach for automated stock market prediction basedon time series analysis. Rather than predicting price directly, predictfuture fundamental data from a trailingwindow of values. Retrospective analysis with an oracle motivates the approach,demonstrating the superiority ofLFM over standard factor approaches. In future work we will thoroughlyinvestigate the relative advantages of LFMs vs directly predicting price. We also plan to investigate the effects of the sampling window, input length, and lookahead distance.
+In this paper we demonstrate a new approach for automated stock market prediction basedon time series analysis. Rather than predicting price directly, predict future fundamental data from a trailing window of values. Retrospective analysis with an oracle motivates the approach,demonstrating the superiority of LFM over standard factor approaches. In future work we will thoroughly investigate the relative advantages of LFMs vs directly predicting price. We also plan to investigate the effects of the sampling window, input length, and lookahead distance.
 
-
+이 논문에서 우리는 시계열 분석에 기반한 자동화된 주식시장 예측을 위한 새로운 접근법을 보여준다. 가격을 직접 예측하는 대신 trailing window of values에서 미래의 fundamental data를 예측한다. oracle을 이용한 Retrospective analysis는 접근 방식에 동기를 부여하여 standard factor approaches보다 LFM의 우수성을 입증한다.  향후 연구에서는 directly predicting price 보다 LFM의 상대적인 이점을 철저히 조사할 것이다. 또한 sampling window, input lenght, lookahead distance의 효과를 조사할 계획이다.
 
 ### References
 
-[1]: Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio.Neural machine translation by jointly learningto align and translate. *arXiv:1409.0473*, 2014.
+[1] Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio.Neural machine translation by jointly learningto align and translate. *arXiv:1409.0473*, 2014.
 
 [2]     BilbertoBatres-Estrada. Deep learning for multivariate financial time series. 2015.
 
@@ -168,7 +172,7 @@ In thispaper we demonstrate a new approach for automated stock market prediction
 
 [12]     Eero Pätäri and Timo Leivo. A closer look at the value premium.*Journal of Economic Surveys, Vol.31, Issue 1, pp. 79-168, 2017*, 2017.
 
-[13]     <a id="13"></a> Robert J Shiller. Do stock pricesmove too much to be justified by subsequent changes in dividends?, 1980.
+[13]     Robert J Shiller. Do stock pricesmove too much to be justified by subsequent changes in dividends?, 1980.
 
 [14]      Ilya Sutskever, Oriol Vinyals, andQuoc V Le. Sequence to sequence learning with neural networks. In *NIPS*,2014.
 
